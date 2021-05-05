@@ -40,3 +40,13 @@ app.get('/items/:id', (req, res)=>{
         console.log(err);
     });
 });
+
+// delete an item
+app.get('/items/:id', (req, res)=>{
+    mysqlConnection.query('DELETE items WHERE id = ?',[req.params.id], (err, rows, fields) =>{
+        if(!err)
+        res.send('Deleted successfully')
+        else
+        console.log(err);
+    });
+});
