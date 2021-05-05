@@ -30,3 +30,13 @@ app.get('/items', (req, res)=>{
         console.log(err);
     });
 });
+
+// get an item
+app.get('/items/:id', (req, res)=>{
+    mysqlConnection.query('SELECT * FROM items WHERE id = ?',[req.params.id], (err, rows, fields) =>{
+        if(!err)
+        res.send(rows)
+        else
+        console.log(err);
+    });
+});
