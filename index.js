@@ -43,10 +43,27 @@ app.get('/items/:id', (req, res)=>{
 
 // delete an item
 app.get('/items/:id', (req, res)=>{
-    mysqlConnection.query('DELETE items WHERE id = ?',[req.params.id], (err, rows, fields) =>{
+    mysqlConnection.query('DELETE FROM items WHERE id = ?',[req.params.id], (err, rows, fields) =>{
         if(!err)
         res.send('Deleted successfully')
         else
         console.log(err);
     });
 });
+
+// insert an item
+app.post('/items', (req, res) => {
+    let emp = req.body;
+    var sql = "SET @id = ?;SET @name = ?;SET @qty = ?;SET @amount = ?; \
+    CALL itemAddOrEdit(@id,@name,@qty,@amount);";
+    mysqlConnection.query(sql, [item.id, item.name, item.qty, item.amount], (err, rows, fields) => {
+        if (!err)
+            rows.forEach(element => {
+                if(element.constructor == Array)
+                res.send('Inserted item id : '+element[0].id);
+            });
+        else
+            console.log(err);
+    })
+});
+
